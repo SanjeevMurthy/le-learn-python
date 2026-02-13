@@ -1,0 +1,56 @@
+# ============================================================
+# DevOps/SRE Python Toolkit - Core Dependencies
+# ============================================================
+
+# --- AWS ---
+boto3>=1.28.0
+botocore>=1.31.0
+
+# --- GCP ---
+# google-cloud-compute>=1.14.0
+# google-cloud-storage>=2.10.0
+# google-cloud-logging>=3.6.0
+
+# --- Kubernetes ---
+kubernetes>=28.0.0
+
+# --- Monitoring ---
+prometheus-client>=0.17.0
+# grafana-client>=3.5.0
+
+# --- CI/CD ---
+pygithub>=2.1.0
+python-gitlab>=4.0.0
+python-jenkins>=1.8.0
+
+# --- Secrets Management ---
+hvac>=1.2.0  # HashiCorp Vault
+
+# --- Utilities ---
+requests>=2.31.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+click>=8.1.0        # CLI framework
+rich>=13.0.0        # Beautiful terminal output
+tenacity>=8.2.0     # Retry logic
+
+# --- Async ---
+aiohttp>=3.9.0
+
+# --- Logging ---
+structlog>=23.1.0
+python-json-logger>=2.0.7
+
+# --- Infrastructure as Code ---
+# python-terraform>=0.10.1
+
+# --- Database ---
+# psycopg2-binary>=2.9.0
+# pymongo>=4.5.0
+redis>=5.0.0
+
+# --- Testing (also needed at runtime for some patterns) ---
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+responses>=0.23.0
