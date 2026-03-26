@@ -1,0 +1,90 @@
+name: Python CI
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+
+jobs:
+    lint-and-compile:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ["3.10", "3.11", "3.12"]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ matrix.python-version }}
+
+            - name: Syntax check all Python files
+              run: |
+                  echo "Checking Python syntax..."
+                  find . -name "*.py" -not -path "./.git/*" -not -path "./__pycache__/*" \
+                    | xargs -I{} python -m py_compile {}
+                  echo "All files compiled successfully"
+
+            - name: Run unit tests
+              run: |
+                  cd tests/unit
+                  for test_file in test_*.py; do
+                    echo "Running $test_file..."
+                    python "$test_file"
+                  done
+
+            - name: Run integration tests
+              run: |
+                  cd tests/integration
+                  for test_file in test_*.py; do
+                    echo "Running $test_file..."
+                    python "$test_file"
+                  done
+
+    structure-check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Verify module structure
+              run: |
+                  modules=(
+                    "01-core-python-for-sre"
+                    "02-cloud-automation"
+                    "03-kubernetes"
+                    "04-cicd-automation"
+                    "05-monitoring-observability"
+                    "06-secret-management"
+                    "07-artifact-management"
+                    "08-infrastructure-as-code"
+                    "09-incident-response"
+                    "10-performance-optimization"
+                    "11-networking"
+                    "12-database-operations"
+                    "13-interview-prep"
+                    "14-utilities"
+                    "15-real-world-projects"
+                  )
+                  for module in "${modules[@]}"; do
+                    if [ ! -d "$module" ]; then
+                      echo "❌ Missing: $module"
+                      exit 1
+                    fi
+                    if [ ! -f "$module/README.md" ]; then
+                      echo "❌ Missing README: $module/README.md"
+                      exit 1
+                    fi
+                    echo "✅ $module"
+                  done
+
+            - name: Count files
+              run: |
+                  echo "Total Python files:"
+                  find . -name "*.py" -not -path "./.git/*" | wc -l
+                  echo "Total Markdown files:"
+                  find . -name "*.md" -not -path "./.git/*" | wc -l
